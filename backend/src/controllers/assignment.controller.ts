@@ -1,7 +1,41 @@
 import { Request, Response, NextFunction } from 'express';
 import * as assignmentService from '../services/assignment.service';
+import { enqueueQuestionGeneration } from '../queues/questionGeneration.queue';
 
-// ── POST /assignments ─────────────────────────────────────────────────────────
+// ── POST /assignments/generate/:id ────────────────────────────────────────────
+
+export async function triggerGeneration(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const assignment = await assignmentService.findAssignmentById(req.params.id);
+    if (!assignment) {
+      res.status(404).json({ success: false, message: 'Assignment not found' });
+      return;
+    }
+
+    // Enqueue the job and return immediately — do NOT await generation
+    await enqueueQuestionGeneration({
+      assignmentId: assignment._id.toString(),
+      title: assignment.title,
+      questionTypes: assignment.questionTypes,
+      numQuestions: assignment.numQuestions,
+      marks: assignment.marks,
+      instructions: assignment.instructions,
+    });
+
+    res.status(202).json({
+      success: true,
+      message: 'Question generation started. You will be notified via WebSocket when complete.',
+      assignmentId: assignment._id.toString(),
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
 
 export async function createAssignment(
   req: Request,
@@ -10,11 +44,23 @@ export async function createAssignment(
 ): Promise<void> {
   try {
     const assignment = await assignmentService.createAssignment(req.body);
+
+    // Enqueue an AI question-generation job for this assignment
+    await enqueueQuestionGeneration({
+      assignmentId: assignment._id.toString(),
+      title: assignment.title,
+      questionTypes: assignment.questionTypes,
+      numQuestions: assignment.numQuestions,
+      marks: assignment.marks,
+      instructions: assignment.instructions,
+    });
+
     res.status(201).json({ success: true, data: assignment });
   } catch (err) {
     next(err);
   }
 }
+
 
 // ── GET /assignments ──────────────────────────────────────────────────────────
 

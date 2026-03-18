@@ -8,6 +8,8 @@ import { initSocket } from './sockets';
 
 // ── Imported to register workers at startup ───────────────────────────────────
 import './workers/email.worker';
+import './workers/questionGeneration.worker';
+
 
 // ── HTTP Server ───────────────────────────────────────────────────────────────
 

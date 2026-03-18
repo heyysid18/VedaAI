@@ -5,10 +5,18 @@ import {
   getAssignmentById,
   updateAssignment,
   deleteAssignment,
+  triggerGeneration,
 } from '../controllers/assignment.controller';
 import { validateCreateAssignment } from '../middlewares/assignment.validation';
 
 const router = Router();
+
+/**
+ * @route   POST /api/v1/assignments/generate/:id
+ * @desc    Trigger AI question generation for an existing assignment (fire-and-forget)
+ *          Client will receive "assignment_done" via WebSocket when complete
+ */
+router.post('/generate/:id', triggerGeneration);
 
 /**
  * @route   POST /api/v1/assignments
@@ -16,6 +24,7 @@ const router = Router();
  * @body    { title, dueDate, questionTypes, numQuestions, marks, instructions?, status?, generatedPaper? }
  */
 router.post('/', validateCreateAssignment, createAssignment);
+
 
 /**
  * @route   GET /api/v1/assignments

@@ -20,6 +20,8 @@ export const env = {
 
   MONGO_URI: required('MONGO_URI'),
 
+  GEMINI_API_KEY: required('GEMINI_API_KEY'),
+
   REDIS_HOST: optional('REDIS_HOST', 'localhost'),
   REDIS_PORT: parseInt(optional('REDIS_PORT', '6379'), 10),
   REDIS_PASSWORD: optional('REDIS_PASSWORD', ''),
