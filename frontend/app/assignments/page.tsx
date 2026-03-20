@@ -8,20 +8,20 @@ import { Assignment } from '@/types';
 
 function TopBar({ title }: { title: string }) {
   return (
-    <header className="flex items-center justify-between px-6 py-3.5 bg-white border-b border-gray-100">
+    <header className="flex items-center justify-between px-6 py-3 bg-white border-b border-gray-200">
       <div className="flex items-center gap-3 text-sm text-gray-400">
         <Link href="/" className="hover:text-gray-700 transition-colors">
           <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
           </svg>
         </Link>
-        <div className="w-4 h-4 opacity-40">
+        <div className="w-4 h-4 text-gray-300">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
             <rect x="1" y="1" width="5" height="5" rx="0.5"/><rect x="10" y="1" width="5" height="5" rx="0.5"/>
             <rect x="1" y="10" width="5" height="5" rx="0.5"/><rect x="10" y="10" width="5" height="5" rx="0.5"/>
           </svg>
         </div>
-        <span>{title}</span>
+        <span className="text-gray-400">{title}</span>
       </div>
       <div className="flex items-center gap-3">
         {/* Bell */}
@@ -33,7 +33,7 @@ function TopBar({ title }: { title: string }) {
         </button>
         {/* Avatar */}
         <button className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-gray-900">
-          <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-xs">
+          <div className="w-8 h-8 rounded-full bg-orange-200 flex items-center justify-center text-orange-700 font-bold text-xs overflow-hidden">
             J
           </div>
           <span>John Doe</span>
@@ -70,11 +70,13 @@ function AssignmentCard({ assignment }: { assignment: Assignment }) {
     }).replace(/\//g, '-');
 
   return (
-    <div className="relative bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md transition-shadow cursor-pointer group"
-      onClick={() => router.push(`/assignment/${assignment._id}`)}>
+    <div
+      className="relative bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+      onClick={() => router.push(`/assignment/${assignment._id}`)}
+    >
       {/* Title row */}
-      <div className="flex items-start justify-between mb-6">
-        <h3 className="font-semibold text-gray-900 text-base pr-2 line-clamp-2 group-hover:text-orange-600 transition-colors">
+      <div className="flex items-start justify-between mb-8">
+        <h3 className="font-semibold text-gray-900 text-base pr-2 line-clamp-2">
           {assignment.title}
         </h3>
         {/* 3-dot menu */}
@@ -91,11 +93,11 @@ function AssignmentCard({ assignment }: { assignment: Assignment }) {
             <div className="absolute right-0 top-9 z-20 w-44 bg-white rounded-xl shadow-lg border border-gray-100 py-1 text-sm">
               <button
                 onClick={() => router.push(`/assignment/${assignment._id}`)}
-                className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-50 transition-colors"
+                className="w-full text-left px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 View Assignment
               </button>
-              <button className="w-full text-left px-4 py-2 text-red-500 hover:bg-red-50 transition-colors">
+              <button className="w-full text-left px-4 py-2.5 text-red-500 hover:bg-red-50 transition-colors">
                 Delete
               </button>
             </div>
@@ -141,7 +143,7 @@ export default function AssignmentsPage() {
             <span className="w-2.5 h-2.5 rounded-full bg-green-500 inline-block" />
             <h1 className="text-lg font-bold text-gray-900">Assignments</h1>
           </div>
-          <p className="text-sm text-gray-400 ml-4">Manage and create assignments for your classes.</p>
+          <p className="text-sm text-gray-400 ml-[18px]">Manage and create assignments for your classes.</p>
         </div>
 
         {/* Filter + Search bar */}
@@ -183,25 +185,38 @@ export default function AssignmentsPage() {
           <div className="flex flex-col items-center justify-center py-24 text-center">
             {/* Illustration */}
             <div className="mb-6 relative">
-              <div className="w-28 h-28 rounded-full bg-gray-100 flex items-center justify-center">
-                <svg width="64" height="64" fill="none" viewBox="0 0 64 64">
-                  <rect x="12" y="8" width="36" height="44" rx="4" fill="#E5E7EB" />
-                  <rect x="18" y="16" width="24" height="3" rx="1.5" fill="#9CA3AF" />
-                  <rect x="18" y="23" width="20" height="3" rx="1.5" fill="#9CA3AF" />
-                  <rect x="18" y="30" width="16" height="3" rx="1.5" fill="#9CA3AF" />
-                  <circle cx="42" cy="42" r="12" fill="white" stroke="#E5E7EB" strokeWidth="2"/>
-                  <path d="M38 42L40.5 44.5L46 39" stroke="#EF4444" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <div className="w-40 h-40 rounded-full bg-gray-100 flex items-center justify-center">
+                <svg width="120" height="100" fill="none" viewBox="0 0 120 100">
+                  {/* Document */}
+                  <rect x="20" y="5" width="55" height="70" rx="5" fill="#E5E7EB" />
+                  <rect x="30" y="18" width="35" height="4" rx="2" fill="#1a1a1a" />
+                  <rect x="30" y="27" width="28" height="3" rx="1.5" fill="#9CA3AF" />
+                  <rect x="30" y="34" width="22" height="3" rx="1.5" fill="#9CA3AF" />
+                  {/* Pencil/squiggle */}
+                  <path d="M72 12 Q78 8 76 16" stroke="#374151" strokeWidth="2" strokeLinecap="round" fill="none" />
+                  {/* Magnifying glass */}
+                  <circle cx="75" cy="65" r="22" fill="white" stroke="#D1D5DB" strokeWidth="2"/>
+                  <circle cx="75" cy="65" r="16" fill="#F3F4F6" />
+                  {/* X inside magnifier */}
+                  <path d="M68 58L82 72M82 58L68 72" stroke="#EF4444" strokeWidth="4" strokeLinecap="round" />
+                  {/* Handle */}
+                  <path d="M91 81L103 93" stroke="#9CA3AF" strokeWidth="4" strokeLinecap="round" />
+                  {/* Decorators */}
+                  <path d="M15 78 L19 74 L17 80" stroke="#60A5FA" strokeWidth="1.5" strokeLinejoin="round" fill="none" />
+                  <circle cx="105" cy="55" r="3" fill="#BFDBFE" />
                 </svg>
               </div>
             </div>
-            <h2 className="text-lg font-bold text-gray-800">No assignments yet</h2>
-            <p className="text-sm text-gray-400 mt-1.5 max-w-xs">
-              {search ? 'No assignments match your search.' : 'Create your first assignment to start collecting and grading student submissions.'}
+            <h2 className="text-base font-bold text-gray-800">No assignments yet</h2>
+            <p className="text-sm text-gray-400 mt-2 max-w-xs leading-relaxed">
+              {search
+                ? 'No assignments match your search.'
+                : 'Create your first assignment to start collecting and grading student submissions. You can set up rubrics, define marking criteria, and let AI assist with grading.'}
             </p>
             {!search && (
               <Link
                 href="/assignment/new"
-                className="mt-5 flex items-center gap-2 rounded-full bg-[#1a1a1a] px-5 py-2.5 text-sm font-medium text-white hover:bg-black transition-colors"
+                className="mt-6 flex items-center gap-2 rounded-full bg-[#1a1a1a] px-6 py-3 text-sm font-medium text-white hover:bg-black transition-colors"
               >
                 <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />

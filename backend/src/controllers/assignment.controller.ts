@@ -21,7 +21,7 @@ export async function triggerGeneration(
       title: assignment.title,
       questionTypes: assignment.questionTypes,
       numQuestions: assignment.numQuestions,
-      marks: assignment.marksPerQuestion,
+      marks: assignment.numQuestions * assignment.marksPerQuestion, // total marks
       instructions: assignment.instructions,
     });
 

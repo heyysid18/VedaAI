@@ -26,7 +26,7 @@ const NAV_ITEMS = [
   {
     label: 'Assignments',
     href: '/assignments',
-    badge: null,
+    badge: 10,
     icon: (
       <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
@@ -34,17 +34,19 @@ const NAV_ITEMS = [
     ),
   },
   {
-    label: 'AI Teacher\'s Toolkit',
-    href: '/library',
+    label: "AI Teacher's Toolkit",
+    href: '/toolkit',
     icon: (
       <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+        <rect x="2" y="3" width="20" height="14" rx="2" strokeLinecap="round" strokeLinejoin="round" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 21h8M12 17v4" />
       </svg>
     ),
   },
   {
     label: 'My Library',
     href: '/library',
+    badge: null,
     icon: (
       <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -57,13 +59,16 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-[260px] shrink-0 bg-white flex flex-col min-h-screen sticky top-0 border-r border-gray-100 shadow-sm">
+    <aside className="w-[220px] shrink-0 bg-white flex flex-col min-h-screen sticky top-0 border-r border-gray-100 shadow-sm">
       {/* Logo */}
-      <div className="px-5 py-5">
+      <div className="px-5 pt-5 pb-4">
         <div className="flex items-center gap-2 mb-5">
           {/* Orange VedaAI logo icon */}
-          <div className="w-8 h-8 rounded-lg bg-orange-500 flex items-center justify-center text-white font-bold text-xs">
-            V
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-sm">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 3L4 8v8l8 5 8-5V8L12 3z" fill="white" fillOpacity="0.9" />
+              <path d="M12 3L4 8l8 5 8-5-8-5z" fill="white" fillOpacity="0.4" />
+            </svg>
           </div>
           <span className="text-gray-900 font-bold text-lg tracking-tight">VedaAI</span>
         </div>
@@ -71,9 +76,9 @@ export function Sidebar() {
         {/* Create Assignment CTA */}
         <Link
           href="/assignment/new"
-          className="flex items-center justify-center gap-1.5 w-full rounded-full bg-[#1a1a1a] text-white text-sm font-medium py-2.5 px-4 hover:bg-black transition-colors"
+          className="flex items-center justify-center gap-1.5 w-full rounded-full bg-[#1a1a1a] text-white text-sm font-medium py-2.5 px-4 hover:bg-black transition-colors ring-2 ring-orange-500 ring-offset-1"
         >
-          <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+          <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
           </svg>
           Create Assignment
@@ -91,7 +96,7 @@ export function Sidebar() {
               key={`${item.href}-${item.label}`}
               href={item.href}
               className={`flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive
-                ? 'bg-gray-100 text-gray-900'
+                ? 'bg-gray-100 text-gray-900 ring-2 ring-pink-500'
                 : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
                 }`}
             >
@@ -99,6 +104,11 @@ export function Sidebar() {
                 {item.icon}
                 {item.label}
               </span>
+              {'badge' in item && item.badge != null && (
+                <span className="text-[11px] font-semibold bg-orange-500 text-white rounded-full px-1.5 py-0.5 leading-none min-w-[20px] text-center">
+                  {item.badge}
+                </span>
+              )}
             </Link>
           );
         })}
@@ -121,14 +131,14 @@ export function Sidebar() {
       {/* School Card */}
       <div className="mx-3 mb-4 rounded-xl border border-gray-100 bg-gray-50 p-3">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 shrink-0">
-            <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+          <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600 shrink-0 overflow-hidden border border-orange-200">
+            <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5z" />
             </svg>
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-semibold text-gray-900 truncate">VedaAI Public School</p>
-            <p className="text-xs text-gray-400 truncate">Mumbai,India</p>
+            <p className="text-xs font-semibold text-gray-900 truncate">Delhi Public School</p>
+            <p className="text-xs text-gray-400 truncate">Bokaro Steel City</p>
           </div>
         </div>
       </div>

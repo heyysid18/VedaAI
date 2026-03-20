@@ -39,7 +39,7 @@ const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 // ── Prompt builder ────────────────────────────────────────────────────────────
 
 function buildPrompt(input: AIGenerationInput): string {
-  const marksPerQuestion = Math.ceil(input.marks / input.numQuestions);
+  const marksPerQuestion = Math.round(input.marks / input.numQuestions) || 1;
   const questionTypesFormatted = input.questionTypes.join(', ');
 
   return `
@@ -49,11 +49,11 @@ Generate a structured exam paper for the assignment titled: "${input.title}".
 
 Rules:
 - Total questions: ${input.numQuestions}
-- Total marks: ${input.marks} (approximately ${marksPerQuestion} marks per question)
+- Total marks: ${input.marks}
+- Marks per question: ${marksPerQuestion} (assign exactly ${marksPerQuestion} marks to each question)
 - Question types to include: ${questionTypesFormatted}
 - Distribute questions into sections — one section per question type.
 - Each question must have a difficulty level: "easy", "medium", or "hard".
-- Assign marks per question proportionally (easy < medium < hard).
 - For "mcq" and "true_false" question types, you MUST include an "options" array with exactly 4 choices for MCQ, or ["True", "False"] for True/False questions.
 - For all other question types (short_answer, long_answer, fill_in_the_blank), omit the "options" field entirely.
 ${input.instructions ? `- Additional instructions: ${input.instructions}` : ''}
@@ -69,7 +69,7 @@ Return ONLY a valid JSON object in this exact format, with no extra text, no mar
         {
           "text": "<Question text>",
           "difficulty": "easy" | "medium" | "hard",
-          "marks": <number>,
+          "marks": ${marksPerQuestion},
           "options": ["Option A", "Option B", "Option C", "Option D"]  // include ONLY for mcq and true_false
         }
       ]
