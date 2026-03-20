@@ -32,14 +32,24 @@ async function processQuestionGenerationJob(
   );
 
   // ── Step 2: Map AI output → ISection[] shape ──────────────────────────────
-  // GeneratedSection uses { title, instruction, questions[{ text, difficulty, marks }] }
-  // ISection expects  { sectionTitle, questions[{ questionText, questionType, marks }] }
+  // Infer the questionType per section from the section title Gemini returns.
+  // Fall back to 'short_answer' if the title doesn't match a known type.
+  function inferQuestionType(sectionTitle: string): string {
+    const t = sectionTitle.toLowerCase();
+    if (t.includes('multiple choice') || t.includes('mcq')) return 'mcq';
+    if (t.includes('true') && t.includes('false'))             return 'true_false';
+    if (t.includes('fill'))                                     return 'fill_in_the_blank';
+    if (t.includes('long'))                                     return 'long_answer';
+    return 'short_answer';
+  }
+
   const generatedPaper = sections.map((sec) => ({
     sectionTitle: `${sec.title}${sec.instruction ? ` — ${sec.instruction}` : ''}`,
     questions: sec.questions.map((q) => ({
       questionText: q.text,
-      questionType: 'short_answer' as const, // Gemini doesn't return a type per Q; override if needed
+      questionType: inferQuestionType(sec.title) as any,
       marks: q.marks,
+      options: q.options ?? undefined,  // pass MCQ choices through to DB
     })),
   }));
 

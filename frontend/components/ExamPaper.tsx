@@ -163,14 +163,28 @@ export function ExamPaper({ assignment }: Props) {
                           <p className="text-[15px] leading-relaxed text-gray-900">
                             {question.questionText}
                           </p>
-                          
-                          {/* Badges for UI only (hidden in print) */}
+
+                          {/* MCQ / True-False options */}
+                          {question.options && question.options.length > 0 && (
+                            <ol className="mt-3 space-y-1.5 pl-1" style={{ listStyle: 'none' }}>
+                              {question.options.map((opt, oIdx) => (
+                                <li key={oIdx} className="flex items-start gap-2 text-[14px] text-gray-800">
+                                  <span className="font-semibold shrink-0 w-6">
+                                    {String.fromCharCode(65 + oIdx)}.
+                                  </span>
+                                  <span>{opt}</span>
+                                </li>
+                              ))}
+                            </ol>
+                          )}
+
+                          {/* Difficulty / type badges (screen only) */}
                           <div className="flex items-center gap-2 mt-2 print:hidden select-none">
                             <span className={`inline-flex items-center rounded border px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider font-sans ${DIFFICULTY_BADGE[difficulty]}`}>
                               {difficulty}
                             </span>
                             <span className="inline-flex items-center rounded border border-violet-200 bg-violet-50 px-1.5 py-0.5 text-[10px] font-medium text-violet-700 capitalize tracking-wider font-sans">
-                              {question.questionType.replace(/_/g, ' ')}
+                              {question.questionType?.replace(/_/g, ' ') ?? 'question'}
                             </span>
                           </div>
                         </div>

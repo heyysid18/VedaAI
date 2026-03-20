@@ -10,6 +10,7 @@ export interface GeneratedQuestion {
   text: string;
   difficulty: Difficulty;
   marks: number;
+  options?: string[];   // only for MCQ and true_false
 }
 
 export interface GeneratedSection {
@@ -53,6 +54,8 @@ Rules:
 - Distribute questions into sections — one section per question type.
 - Each question must have a difficulty level: "easy", "medium", or "hard".
 - Assign marks per question proportionally (easy < medium < hard).
+- For "mcq" and "true_false" question types, you MUST include an "options" array with exactly 4 choices for MCQ, or ["True", "False"] for True/False questions.
+- For all other question types (short_answer, long_answer, fill_in_the_blank), omit the "options" field entirely.
 ${input.instructions ? `- Additional instructions: ${input.instructions}` : ''}
 
 Return ONLY a valid JSON object in this exact format, with no extra text, no markdown, and no explanation:
@@ -66,7 +69,8 @@ Return ONLY a valid JSON object in this exact format, with no extra text, no mar
         {
           "text": "<Question text>",
           "difficulty": "easy" | "medium" | "hard",
-          "marks": <number>
+          "marks": <number>,
+          "options": ["Option A", "Option B", "Option C", "Option D"]  // include ONLY for mcq and true_false
         }
       ]
     }
@@ -134,6 +138,7 @@ function parseGeminiResponse(rawText: string): AIGenerationResult {
           text: (q as any).text as string,
           difficulty: (q as any).difficulty as Difficulty,
           marks: (q as any).marks as number,
+          options: Array.isArray((q as any).options) ? (q as any).options as string[] : undefined,
         };
       }
     );

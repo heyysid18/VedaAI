@@ -14,6 +14,7 @@ export interface GeneratedQuestion {
   questionText: string;
   questionType: QuestionType;
   marks: number;
+  options?: string[];   // present for mcq and true_false
 }
 
 export interface GeneratedSection {
