@@ -1,9 +1,10 @@
 import { Assignment, CreateAssignmentDto, ApiResponse } from '@/types';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
+// NEXT_PUBLIC_API_URL should include the full base: http://localhost:3000/api/v1
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000/api/v1';
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`${API_BASE}/api/v1${path}`, {
+  const res = await fetch(`${API_BASE}${path}`, {
     headers: { 'Content-Type': 'application/json' },
     ...init,
   });
@@ -35,7 +36,7 @@ export const assignmentService = {
    * Backend returns 202 immediately; worker emits "assignment_done" via WS.
    */
   triggerGeneration: (id: string) =>
-    fetch(`${API_BASE}/api/v1/assignments/generate/${id}`, {
+    fetch(`${API_BASE}/assignments/generate/${id}`, {
       method: 'POST',
     }).then((r) => r.json()),
 };

@@ -33,7 +33,8 @@ if (env.isDevelopment) {
 
 // ── Routes ────────────────────────────────────────────────────────────────────
 
-app.use('/api/v1', apiRouter);
+app.use('/api/v1', apiRouter); // versioned
+app.use('/api', apiRouter);    // unversioned alias (backwards compat)
 
 // ── Error Handling ────────────────────────────────────────────────────────────
 

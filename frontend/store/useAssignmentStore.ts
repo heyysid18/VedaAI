@@ -1,45 +1,52 @@
 import { create } from 'zustand';
-import { Assignment } from '@/types';
+import { Assignment, CreateAssignmentDto } from '@/types';
+import { assignmentService } from '@/services/assignmentService';
 
-interface AssignmentState {
-  // ── Data ────────────────────────────────────────────────────────────────────
-  assignments: Assignment[];
-  current: Assignment | null;
-
-  // ── UI state ─────────────────────────────────────────────────────────────────
+interface AssignmentStore {
+  assignment: Assignment | null;
   loading: boolean;
   generating: boolean;
   error: string | null;
-
-  // ── Setters ──────────────────────────────────────────────────────────────────
-  setAssignments: (assignments: Assignment[]) => void;
-  setCurrent: (assignment: Assignment | null) => void;
-  updateCurrent: (update: Partial<Assignment>) => void;
-  setLoading: (loading: boolean) => void;
+  
+  // Actions
+  fetchAssignment: (id: string) => Promise<void>;
+  createAssignment: (dto: CreateAssignmentDto) => Promise<Assignment | null>;
+  setAssignment: (assignment: Assignment | null) => void;
   setGenerating: (generating: boolean) => void;
-  setError: (error: string | null) => void;
-  reset: () => void;
 }
 
-const INITIAL_STATE = {
-  assignments: [],
-  current: null,
+export const useAssignmentStore = create<AssignmentStore>((set) => ({
+  assignment: null,
   loading: false,
   generating: false,
   error: null,
-};
 
-export const useAssignmentStore = create<AssignmentState>((set) => ({
-  ...INITIAL_STATE,
+  fetchAssignment: async (id: string) => {
+    set({ loading: true, error: null });
+    try {
+      const data = await assignmentService.getById(id);
+      set({ assignment: data });
+    } catch (err: any) {
+      set({ error: err.message || 'Failed to fetch assignment' });
+    } finally {
+      set({ loading: false });
+    }
+  },
 
-  setAssignments: (assignments) => set({ assignments }),
-  setCurrent: (current) => set({ current }),
-  updateCurrent: (update) =>
-    set((state) =>
-      state.current ? { current: { ...state.current, ...update } } : {}
-    ),
-  setLoading: (loading) => set({ loading }),
+  createAssignment: async (dto: CreateAssignmentDto) => {
+    set({ loading: true, error: null });
+    try {
+      const data = await assignmentService.create(dto);
+      set({ assignment: data });
+      return data;
+    } catch (err: any) {
+      set({ error: err.message || 'Failed to create assignment' });
+      return null;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  setAssignment: (assignment) => set({ assignment }),
   setGenerating: (generating) => set({ generating }),
-  setError: (error) => set({ error }),
-  reset: () => set(INITIAL_STATE),
 }));
