@@ -22,7 +22,7 @@ export function AssignmentForm() {
     dueDate: '',
     questionTypes: [],
     numQuestions: 10,
-    marks: 100,
+    marksPerQuestion: 5,
     instructions: '',
   });
 
@@ -39,7 +39,7 @@ export function AssignmentForm() {
     e.preventDefault();
     const assignment = await create(form);
     if (assignment) {
-      router.push(`/assignment/${assignment._id}`);
+      router.push('/assignments'); // Go to list page after creation
     }
   };
 
@@ -115,16 +115,19 @@ export function AssignmentForm() {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Total Marks
+            Marks per Question
           </label>
           <input
             type="number"
             min={1}
             required
-            value={form.marks}
-            onChange={(e) => setForm({ ...form, marks: Number(e.target.value) })}
+            value={form.marksPerQuestion}
+            onChange={(e) => setForm({ ...form, marksPerQuestion: Number(e.target.value) })}
             className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+          <p className="text-xs text-gray-400 mt-1">
+            Total: {form.numQuestions * form.marksPerQuestion} marks
+          </p>
         </div>
       </div>
 

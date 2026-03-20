@@ -15,7 +15,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${inter.variable} h-full`}>
-      <body className="h-full flex antialiased bg-[#F9FAFB]">
+      <body className={`${inter.variable} h-full flex antialiased bg-[#EFEFEF]`}>
         <Sidebar />
         <div className="flex-1 flex flex-col min-h-full overflow-auto">
           {children}

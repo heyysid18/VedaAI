@@ -29,7 +29,7 @@ export interface Assignment {
   dueDate: string;
   questionTypes: QuestionType[];
   numQuestions: number;
-  marks: number;
+  marksPerQuestion: number;
   instructions?: string;
   status: AssignmentStatus;
   generatedPaper: GeneratedSection[];
@@ -44,7 +44,7 @@ export interface CreateAssignmentDto {
   dueDate: string;
   questionTypes: QuestionType[];
   numQuestions: number;
-  marks: number;
+  marksPerQuestion: number;
   instructions?: string;
 }
 

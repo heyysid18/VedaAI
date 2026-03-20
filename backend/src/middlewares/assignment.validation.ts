@@ -20,7 +20,7 @@ export function validateCreateAssignment(
   next: NextFunction
 ): void {
   const errors: string[] = [];
-  const { title, dueDate, questionTypes, numQuestions, marks, instructions, status } =
+  const { title, dueDate, questionTypes, numQuestions, marksPerQuestion, instructions, status } =
     req.body;
 
   // title
@@ -61,11 +61,11 @@ export function validateCreateAssignment(
     errors.push('numQuestions must be an integer between 1 and 500');
   }
 
-  // marks
-  if (marks === undefined || marks === null) {
-    errors.push('marks is required');
-  } else if (typeof marks !== 'number' || marks < 1) {
-    errors.push('marks must be a number greater than or equal to 1');
+  // marksPerQuestion
+  if (marksPerQuestion === undefined || marksPerQuestion === null) {
+    errors.push('marksPerQuestion is required');
+  } else if (typeof marksPerQuestion !== 'number' || marksPerQuestion < 1) {
+    errors.push('marksPerQuestion must be a number greater than or equal to 1');
   }
 
   // instructions (optional)

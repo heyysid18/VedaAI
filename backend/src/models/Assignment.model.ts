@@ -33,7 +33,7 @@ export interface IAssignment {
   dueDate: Date;
   questionTypes: QuestionType[];
   numQuestions: number;
-  marks: number;
+  marksPerQuestion: number;
   instructions?: string;
   status: AssignmentStatus;
   generatedPaper: ISection[];
@@ -120,10 +120,10 @@ const AssignmentSchema = new Schema<IAssignmentDocument>(
       min: [1, 'Must have at least 1 question'],
       max: [500, 'Cannot exceed 500 questions'],
     },
-    marks: {
+    marksPerQuestion: {
       type: Number,
-      required: [true, 'Total marks are required'],
-      min: [1, 'Marks must be at least 1'],
+      required: [true, 'Marks per question is required'],
+      min: [1, 'Marks per question must be at least 1'],
     },
     instructions: {
       type: String,

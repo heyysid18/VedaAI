@@ -3,13 +3,17 @@ import { Assignment, CreateAssignmentDto } from '@/types';
 import { assignmentService } from '@/services/assignmentService';
 
 interface AssignmentStore {
+  // Single assignment (for output/detail page)
   assignment: Assignment | null;
+  // All assignments (for the list page)
+  assignments: Assignment[];
   loading: boolean;
   generating: boolean;
   error: string | null;
-  
+
   // Actions
   fetchAssignment: (id: string) => Promise<void>;
+  fetchAssignments: () => Promise<void>;
   createAssignment: (dto: CreateAssignmentDto) => Promise<Assignment | null>;
   setAssignment: (assignment: Assignment | null) => void;
   setGenerating: (generating: boolean) => void;
@@ -17,6 +21,7 @@ interface AssignmentStore {
 
 export const useAssignmentStore = create<AssignmentStore>((set) => ({
   assignment: null,
+  assignments: [],
   loading: false,
   generating: false,
   error: null,
@@ -33,11 +38,24 @@ export const useAssignmentStore = create<AssignmentStore>((set) => ({
     }
   },
 
+  fetchAssignments: async () => {
+    set({ loading: true, error: null });
+    try {
+      const data = await assignmentService.getAll();
+      set({ assignments: data });
+    } catch (err: any) {
+      set({ error: err.message || 'Failed to fetch assignments' });
+    } finally {
+      set({ loading: false });
+    }
+  },
+
   createAssignment: async (dto: CreateAssignmentDto) => {
     set({ loading: true, error: null });
     try {
       const data = await assignmentService.create(dto);
-      set({ assignment: data });
+      // Prepend to list so it appears at the top immediately
+      set((state) => ({ assignment: data, assignments: [data, ...state.assignments] }));
       return data;
     } catch (err: any) {
       set({ error: err.message || 'Failed to create assignment' });

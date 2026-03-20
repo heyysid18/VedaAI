@@ -41,7 +41,7 @@ export function AssignmentOutput({ assignmentId }: Props) {
           <h1 className="text-2xl font-bold text-gray-900">{current.title}</h1>
           <p className="text-sm text-gray-500 mt-1">
             Due: {new Date(current.dueDate).toLocaleDateString()} &bull;{' '}
-            {current.numQuestions} questions &bull; {current.marks} marks
+            {current.numQuestions} questions &bull; {current.marksPerQuestion} marks/question
           </p>
         </div>
         <div className="flex items-center gap-3">

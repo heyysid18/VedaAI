@@ -16,13 +16,12 @@ export async function triggerGeneration(
       return;
     }
 
-    // Enqueue the job and return immediately — do NOT await generation
     await enqueueQuestionGeneration({
       assignmentId: assignment._id.toString(),
       title: assignment.title,
       questionTypes: assignment.questionTypes,
       numQuestions: assignment.numQuestions,
-      marks: assignment.marks,
+      marks: assignment.marksPerQuestion,
       instructions: assignment.instructions,
     });
 
@@ -44,17 +43,7 @@ export async function createAssignment(
 ): Promise<void> {
   try {
     const assignment = await assignmentService.createAssignment(req.body);
-
-    // Enqueue an AI question-generation job for this assignment
-    await enqueueQuestionGeneration({
-      assignmentId: assignment._id.toString(),
-      title: assignment.title,
-      questionTypes: assignment.questionTypes,
-      numQuestions: assignment.numQuestions,
-      marks: assignment.marks,
-      instructions: assignment.instructions,
-    });
-
+    // Return the created assignment — AI generation is triggered separately by the user
     res.status(201).json({ success: true, data: assignment });
   } catch (err) {
     next(err);
