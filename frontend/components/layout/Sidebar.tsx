@@ -71,10 +71,10 @@ export function Sidebar() {
         {/* Create Assignment CTA */}
         <Link
           href="/assignment/new"
-          className="flex items-center justify-center gap-2 w-full rounded-full bg-[#1a1a1a] text-white text-sm font-medium py-2.5 px-4 hover:bg-black transition-colors"
+          className="flex items-center justify-center gap-1.5 w-full rounded-full bg-[#1a1a1a] text-white text-sm font-medium py-2.5 px-4 hover:bg-black transition-colors"
         >
-          <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2l1.64 4.36L18 8l-4.36 1.64L12 14l-1.64-4.36L6 8l4.36-1.64L12 2z"/>
+          <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
           </svg>
           Create Assignment
         </Link>
@@ -90,11 +90,10 @@ export function Sidebar() {
             <Link
               key={`${item.href}-${item.label}`}
               href={item.href}
-              className={`flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                isActive
-                  ? 'bg-gray-100 text-gray-900'
-                  : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
-              }`}
+              className={`flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive
+                ? 'bg-gray-100 text-gray-900'
+                : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                }`}
             >
               <span className="flex items-center gap-3">
                 {item.icon}
@@ -128,8 +127,8 @@ export function Sidebar() {
             </svg>
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-semibold text-gray-900 truncate">Delhi Public School</p>
-            <p className="text-xs text-gray-400 truncate">Bokaro Steel City</p>
+            <p className="text-xs font-semibold text-gray-900 truncate">VedaAI Public School</p>
+            <p className="text-xs text-gray-400 truncate">Mumbai,India</p>
           </div>
         </div>
       </div>
