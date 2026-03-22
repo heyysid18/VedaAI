@@ -208,7 +208,7 @@ NODE_ENV=development
 PORT=3000
 
 # MongoDB
-MONGO_URI=mongodb://localhost:27017/vedaai
+MONGO_URI=your mongo db uri
 
 # Redis
 REDIS_HOST=127.0.0.1
