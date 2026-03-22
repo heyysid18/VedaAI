@@ -2,6 +2,8 @@
 
 > An AI-powered examination paper generator. Describe your assignment, and VedaAI produces a fully structured, print-ready question paper in seconds — with real-time progress updates.
 
+**Live App Demo:** [https://vedaai-frontend.onrender.com/](https://vedaai-frontend.onrender.com/)
+
 ---
 
 ## Table of Contents
